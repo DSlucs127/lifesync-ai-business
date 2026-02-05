@@ -68,14 +68,13 @@ app.post('/api/webhook/whatsapp', async (req, res) => {
             history = msgs.docs.map(d => d.data()).reverse();
         }
 
-        // B. Salvar mensagem do usuário
-        await contactsRef.doc(contactId).collection('messages').add({
+        // B. & C. Executar em paralelo: Salvar mensagem do usuário e Consultar Gemini
+        const saveMessagePromise = contactsRef.doc(contactId).collection('messages').add({
             role: 'user',
             content: message,
             timestamp: new Date().toISOString()
         });
 
-        // C. Consultar Gemini (Cérebro do Vendedor)
         const prompt = `
             Você é um assistente de CRM e Vendas da LifeSync.
             Histórico da conversa: ${JSON.stringify(history)}.
@@ -84,10 +83,12 @@ app.post('/api/webhook/whatsapp', async (req, res) => {
             Se for suporte técnico, seja empático.
         `;
 
-        const aiResponse = await aiClient.models.generateContent({
+        const aiResponsePromise = aiClient.models.generateContent({
             model: 'gemini-3-flash-preview',
             contents: prompt
         });
+
+        const [, aiResponse] = await Promise.all([saveMessagePromise, aiResponsePromise]);
         
         const replyText = aiResponse.response.text();
 
