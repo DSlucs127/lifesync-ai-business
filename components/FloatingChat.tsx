@@ -6,7 +6,6 @@ import { MessageCircle, X, Minimize2, ChevronDown } from 'lucide-react';
 interface FloatingChatProps {
   transactions: Transaction[];
   events: CalendarEvent[];
-  // Fix: Update signatures to omit userId as it is handled by the useAppData hook
   onAddTransaction: (t: Omit<Transaction, 'id' | 'userId'>) => void;
   onAddEvent: (e: Omit<CalendarEvent, 'id' | 'userId'>) => void;
 }
