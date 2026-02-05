@@ -10,9 +10,9 @@ interface TaskKanbanProps {
 
 export const TaskKanban: React.FC<TaskKanbanProps> = ({ tasks, onEdit, onStatusChange }) => {
   const columns: { id: Task['status'], label: string, color: string }[] = [
-      { id: 'todo', label: 'A Fazer', color: 'bg-slate-100 border-slate-200' },
-      { id: 'in_progress', label: 'Em Andamento', color: 'bg-indigo-50 border-indigo-100' },
-      { id: 'done', label: 'Concluído', color: 'bg-emerald-50 border-emerald-100' },
+      { id: 'todo', label: 'A Fazer', color: 'bg-slate-100 border-slate-200 dark:bg-slate-800/50 dark:border-slate-700' },
+      { id: 'in_progress', label: 'Em Andamento', color: 'bg-indigo-50 border-indigo-100 dark:bg-indigo-900/20 dark:border-indigo-800/50' },
+      { id: 'done', label: 'Concluído', color: 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-800/50' },
   ];
 
   const getPriorityBadge = (p: string) => {
@@ -36,8 +36,8 @@ export const TaskKanban: React.FC<TaskKanbanProps> = ({ tasks, onEdit, onStatusC
           return (
               <div key={col.id} className={`rounded-xl border ${col.color} p-4 flex flex-col h-fit min-h-[200px]`}>
                   <div className="flex justify-between items-center mb-4">
-                      <h3 className="font-bold text-slate-700">{col.label}</h3>
-                      <span className="bg-white px-2 py-0.5 rounded-md text-xs font-bold text-slate-500 shadow-sm border border-slate-100">
+                      <h3 className="font-bold text-slate-700 dark:text-white">{col.label}</h3>
+                      <span className="bg-white dark:bg-slate-700 px-2 py-0.5 rounded-md text-xs font-bold text-slate-500 dark:text-slate-400 shadow-sm border border-slate-100 dark:border-slate-600">
                           {colTasks.length}
                       </span>
                   </div>
@@ -51,30 +51,30 @@ export const TaskKanban: React.FC<TaskKanbanProps> = ({ tasks, onEdit, onStatusC
                           return (
                               <div 
                                 key={task.id} 
-                                className={`bg-white p-3 rounded-lg border shadow-sm hover:shadow-md transition-all group ${overdue ? 'border-red-200 ring-1 ring-red-100' : 'border-slate-100'}`}
+                                className={`bg-white dark:bg-slate-700 p-3 rounded-lg border shadow-sm hover:shadow-md transition-all group ${overdue ? 'border-red-200 dark:border-red-800 ring-1 ring-red-100 dark:ring-red-900/30' : 'border-slate-100 dark:border-slate-600'}`}
                               >
                                   <div className="flex justify-between items-start mb-2">
                                       <div className="flex items-center space-x-2">
                                           {getPriorityBadge(task.priority)}
-                                          <span className="text-xs font-medium text-slate-400 capitalize">{task.priority}</span>
+                                          <span className="text-xs font-medium text-slate-400 dark:text-slate-400 capitalize">{task.priority}</span>
                                       </div>
-                                      <button onClick={() => onEdit(task)} className="text-slate-300 hover:text-indigo-600">
+                                      <button onClick={() => onEdit(task)} className="text-slate-300 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400">
                                           <Edit2 className="w-3 h-3" />
                                       </button>
                                   </div>
                                   
-                                  <h4 className="font-semibold text-slate-800 text-sm mb-1">{task.title}</h4>
+                                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">{task.title}</h4>
                                   
                                   <div className="flex flex-wrap gap-2 mt-3">
                                       {task.dueDate && (
-                                          <div className={`flex items-center text-xs ${overdue ? 'text-red-600 font-bold' : 'text-slate-500'}`}>
+                                          <div className={`flex items-center text-xs ${overdue ? 'text-red-600 dark:text-red-400 font-bold' : 'text-slate-500 dark:text-slate-400'}`}>
                                               {overdue ? <AlertCircle className="w-3 h-3 mr-1" /> : <Clock className="w-3 h-3 mr-1" />}
                                               {new Date(task.dueDate).toLocaleDateString('pt-BR')}
                                           </div>
                                       )}
                                       
                                       {totalSub > 0 && (
-                                          <div className={`flex items-center text-xs px-1.5 py-0.5 rounded ${doneSub === totalSub ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'}`}>
+                                          <div className={`flex items-center text-xs px-1.5 py-0.5 rounded ${doneSub === totalSub ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}`}>
                                               <ListTree className="w-3 h-3 mr-1" />
                                               {doneSub}/{totalSub}
                                           </div>
@@ -82,19 +82,19 @@ export const TaskKanban: React.FC<TaskKanbanProps> = ({ tasks, onEdit, onStatusC
                                   </div>
 
                                   {/* Quick Actions for Status Move (Simple implementation) */}
-                                  <div className="mt-3 pt-2 border-t border-slate-50 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div className="mt-3 pt-2 border-t border-slate-50 dark:border-slate-600 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
                                       {col.id !== 'todo' && (
-                                          <button onClick={() => onStatusChange(task, 'todo')} className="text-[10px] text-slate-400 hover:text-slate-600">
+                                          <button onClick={() => onStatusChange(task, 'todo')} className="text-[10px] text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
                                               ← A Fazer
                                           </button>
                                       )}
                                       {col.id === 'todo' && (
-                                          <button onClick={() => onStatusChange(task, 'in_progress')} className="text-[10px] text-indigo-500 hover:text-indigo-700 ml-auto">
+                                          <button onClick={() => onStatusChange(task, 'in_progress')} className="text-[10px] text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 ml-auto">
                                               Em Andamento →
                                           </button>
                                       )}
                                       {col.id === 'in_progress' && (
-                                          <button onClick={() => onStatusChange(task, 'done')} className="text-[10px] text-emerald-500 hover:text-emerald-700">
+                                          <button onClick={() => onStatusChange(task, 'done')} className="text-[10px] text-emerald-500 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300">
                                               Concluir →
                                           </button>
                                       )}

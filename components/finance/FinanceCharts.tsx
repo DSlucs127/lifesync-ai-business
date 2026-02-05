@@ -30,8 +30,8 @@ export const FinanceCharts: React.FC<FinanceChartsProps> = ({ transactions }) =>
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <h3 className="text-lg font-bold text-slate-800 mb-4">Despesas por Categoria</h3>
+      <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Despesas por Categoria</h3>
         {/* Added minHeight and explicit style to prevent Recharts calculation errors */}
         <div className="w-full" style={{ height: '256px', minHeight: '256px' }}>
           {categoryData.length > 0 ? (
@@ -60,8 +60,8 @@ export const FinanceCharts: React.FC<FinanceChartsProps> = ({ transactions }) =>
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <h3 className="text-lg font-bold text-slate-800 mb-4">Fluxo Mensal</h3>
+      <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Fluxo Mensal</h3>
         {/* Added minHeight and explicit style to prevent Recharts calculation errors */}
         <div className="w-full" style={{ height: '256px', minHeight: '256px' }}>
             {monthlyData.length > 0 ? (
