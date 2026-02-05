@@ -1,9 +1,9 @@
 
 // @google/genai used in this project is handled in geminiService.ts
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { db } from '../services/firebase';
-import { collection, query, where, onSnapshot, doc, addDoc, updateDoc, deleteDoc, setDoc, getDocs, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, addDoc, updateDoc, deleteDoc, setDoc, getDocs, arrayUnion, arrayRemove, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
 import { Transaction, Lead, CalendarEvent, SupportTicket, Task, Category, Budget, Contact, Company, TeamMember, PlanTier, Family, FamilyInvite, UserProfile, OrganizationMember, TeamRole, TeamPermissions } from '../types';
 import { encryptField, decryptField } from '../services/security/encryption';
@@ -50,6 +50,38 @@ export const useAppData = (activeWorkspaceId?: string) => {
         description: await decryptField(e.description, uid),
         category: await decryptField(e.category, uid)
       };
+  };
+
+  // Cache Refs for decrypted data
+  const transactionsCache = useRef<Map<string, { rawStr: string, decrypted: Transaction }>>(new Map());
+  const eventsCache = useRef<Map<string, { rawStr: string, decrypted: CalendarEvent }>>(new Map());
+  const familyTransactionsCache = useRef<Map<string, { rawStr: string, decrypted: Transaction }>>(new Map());
+  const familyEventsCache = useRef<Map<string, { rawStr: string, decrypted: CalendarEvent }>>(new Map());
+
+  // Helper for caching decrypted data
+  const processSnapshotWithCache = async <T>(
+    snapshot: QuerySnapshot<DocumentData>,
+    cacheRef: React.MutableRefObject<Map<string, { rawStr: string, decrypted: T }>>,
+    decryptFn: (data: any, uid: string) => Promise<T>,
+    uid: string
+  ): Promise<T[]> => {
+    const newCache = new Map<string, { rawStr: string, decrypted: T }>();
+    const results = await Promise.all(snapshot.docs.map(async d => {
+        const rawData = { id: d.id, ...d.data() };
+        const rawStr = JSON.stringify(rawData);
+
+        const cached = cacheRef.current.get(d.id);
+        if (cached && cached.rawStr === rawStr) {
+            newCache.set(d.id, cached);
+            return cached.decrypted;
+        }
+
+        const decrypted = await decryptFn(rawData, uid);
+        newCache.set(d.id, { rawStr, decrypted });
+        return decrypted;
+    }));
+    cacheRef.current = newCache;
+    return results;
   };
 
   useEffect(() => {
@@ -123,13 +155,13 @@ export const useAppData = (activeWorkspaceId?: string) => {
 
     const qTrans = query(collection(db, 'transactions'), where('userId', '==', user.uid), where('familyId', '==', null));
     const unsubTrans = onSnapshot(qTrans, async (s) => {
-        const decrypted = await Promise.all(s.docs.map(async d => decryptTransaction({id: d.id, ...d.data()}, user.uid)));
+        const decrypted = await processSnapshotWithCache(s, transactionsCache, decryptTransaction, user.uid);
         setTransactions(decrypted);
     });
 
     const qEvents = query(collection(db, 'events'), where('userId', '==', user.uid), where('familyId', '==', null));
     const unsubEvents = onSnapshot(qEvents, async (s) => {
-        const decrypted = await Promise.all(s.docs.map(async d => decryptEvent({id: d.id, ...d.data()}, user.uid)));
+        const decrypted = await processSnapshotWithCache(s, eventsCache, decryptEvent, user.uid);
         setEvents(decrypted);
     });
 
@@ -190,13 +222,13 @@ export const useAppData = (activeWorkspaceId?: string) => {
             
             const qFamTrans = query(collection(db, 'transactions'), where('familyId', '==', familyData.id));
             const unsubFamTrans = onSnapshot(qFamTrans, async (ss) => {
-                const decrypted = await Promise.all(ss.docs.map(async d => decryptTransaction({id: d.id, ...d.data()}, user.uid)));
+                const decrypted = await processSnapshotWithCache(ss, familyTransactionsCache, decryptTransaction, user.uid);
                 setFamilyTransactions(decrypted);
             });
             
             const qFamEvents = query(collection(db, 'events'), where('familyId', '==', familyData.id));
             const unsubFamEvents = onSnapshot(qFamEvents, async (ss) => {
-                const decrypted = await Promise.all(ss.docs.map(async d => decryptEvent({id: d.id, ...d.data()}, user.uid)));
+                const decrypted = await processSnapshotWithCache(ss, familyEventsCache, decryptEvent, user.uid);
                 setFamilyEvents(decrypted);
             });
             
