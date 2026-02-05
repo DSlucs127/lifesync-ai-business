@@ -11,7 +11,6 @@ interface AdvisorChatProps {
   transactions: Transaction[];
   categories: Category[];
   budgets: Budget[];
-  // Fix: Update prop signature to omit userId
   onUpdateBudget: (b: Omit<Budget, 'userId'>) => void;
   onAddCategory: (name: string) => void;
 }
@@ -128,7 +127,6 @@ export const AdvisorChat: React.FC<AdvisorChatProps> = ({
       toolCalls.forEach((call: any) => {
           if (call.name === 'setBudget') {
               const args = call.args;
-              // Fix: call onUpdateBudget with correct payload
               onUpdateBudget({ categoryId: args.categoryName, limit: Number(args.limitAmount) });
               textResponse += `\n\n✅ Meta: ${args.categoryName} -> R$ ${args.limitAmount}`;
               toolExecuted = true;
