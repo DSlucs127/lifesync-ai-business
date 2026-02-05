@@ -18,6 +18,25 @@
         },
       }
     </script>
+    <script>
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('lifesync_theme');
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          let themeToApply = savedTheme;
+
+          if (!themeToApply || themeToApply === 'system') {
+            themeToApply = systemTheme;
+          }
+
+          if (themeToApply === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <style>
       /* Custom scrollbar for webkit */
       ::-webkit-scrollbar {

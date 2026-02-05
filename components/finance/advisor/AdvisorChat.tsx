@@ -146,36 +146,36 @@ export const AdvisorChat: React.FC<AdvisorChatProps> = ({
 
   if (!mode) {
       return (
-          <div className="flex flex-col h-full p-4 md:p-6 items-center justify-center space-y-6 md:space-y-8 animate-fadeIn bg-slate-50 overflow-y-auto">
+          <div className="flex flex-col h-full p-4 md:p-6 items-center justify-center space-y-6 md:space-y-8 animate-fadeIn bg-slate-50 dark:bg-slate-900 overflow-y-auto">
               <div className="text-center">
-                  <h3 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">Como você prefere prosseguir?</h3>
-                  <p className="text-slate-500 text-sm max-w-xs mx-auto">Escolha como a IA deve estruturar suas metas.</p>
+                  <h3 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white mb-2">Como você prefere prosseguir?</h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto">Escolha como a IA deve estruturar suas metas.</p>
               </div>
 
               <div className="w-full max-w-sm space-y-4">
                   <button 
                     onClick={() => initChat('standard')}
-                    className="w-full bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all text-left flex items-start space-x-4 group active:scale-[0.98]"
+                    className="w-full bg-white dark:bg-slate-800 p-4 md:p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all text-left flex items-start space-x-4 group active:scale-[0.98]"
                   >
-                      <div className="bg-emerald-100 p-3 rounded-lg text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors shrink-0">
+                      <div className="bg-emerald-100 dark:bg-emerald-900/30 p-3 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors shrink-0">
                           <Calculator className="w-6 h-6" />
                       </div>
                       <div>
-                          <span className="block font-bold text-slate-800 text-lg mb-1">Padronizado</span>
-                          <span className="text-sm text-slate-500 leading-tight">Gere um plano rápido baseado no seu perfil e regras de mercado (ex: 50/30/20).</span>
+                          <span className="block font-bold text-slate-800 dark:text-white text-lg mb-1">Padronizado</span>
+                          <span className="text-sm text-slate-500 dark:text-slate-400 leading-tight">Gere um plano rápido baseado no seu perfil e regras de mercado (ex: 50/30/20).</span>
                       </div>
                   </button>
 
                   <button 
                     onClick={() => initChat('custom')}
-                    className="w-full bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-500 hover:shadow-md transition-all text-left flex items-start space-x-4 group active:scale-[0.98]"
+                    className="w-full bg-white dark:bg-slate-800 p-4 md:p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-indigo-500 hover:shadow-md transition-all text-left flex items-start space-x-4 group active:scale-[0.98]"
                   >
-                      <div className="bg-indigo-100 p-3 rounded-lg text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors shrink-0">
+                      <div className="bg-indigo-100 dark:bg-indigo-900/30 p-3 rounded-lg text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors shrink-0">
                           <UserCog className="w-6 h-6" />
                       </div>
                       <div>
-                          <span className="block font-bold text-slate-800 text-lg mb-1">Personalizado</span>
-                          <span className="text-sm text-slate-500 leading-tight">Converse com a IA para ajustar detalhes finos e criar um plano sob medida.</span>
+                          <span className="block font-bold text-slate-800 dark:text-white text-lg mb-1">Personalizado</span>
+                          <span className="text-sm text-slate-500 dark:text-slate-400 leading-tight">Converse com a IA para ajustar detalhes finos e criar um plano sob medida.</span>
                       </div>
                   </button>
               </div>
@@ -184,14 +184,14 @@ export const AdvisorChat: React.FC<AdvisorChatProps> = ({
   }
 
   return (
-    <div className="flex flex-col h-full bg-slate-50">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900">
         <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
             {messages.map(msg => (
                 <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[90%] md:max-w-[85%] p-3.5 rounded-2xl text-sm md:text-base whitespace-pre-wrap shadow-sm ${
                         msg.role === 'user' 
                         ? 'bg-emerald-600 text-white rounded-tr-none' 
-                        : 'bg-white border border-slate-200 text-slate-800 rounded-tl-none'
+                        : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white rounded-tl-none'
                     }`}>
                         {msg.text}
                     </div>
@@ -199,20 +199,20 @@ export const AdvisorChat: React.FC<AdvisorChatProps> = ({
             ))}
             {isLoading && (
                 <div className="flex justify-start">
-                    <div className="bg-white px-4 py-2 rounded-full border border-slate-100 shadow-sm flex items-center space-x-2">
+                    <div className="bg-white dark:bg-slate-800 px-4 py-2 rounded-full border border-slate-100 dark:border-slate-700 shadow-sm flex items-center space-x-2">
                         <Loader2 className="w-4 h-4 animate-spin text-emerald-600" />
-                        <span className="text-xs text-slate-500">Processando plano...</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400">Processando plano...</span>
                     </div>
                 </div>
             )}
             <div ref={messagesEndRef} />
         </div>
 
-        <div className="p-3 bg-white border-t border-slate-200 shrink-0 z-20 shadow-[0_-4px_6_px_-1px_rgba(0,0,0,0.05)]">
+        <div className="p-3 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shrink-0 z-20 shadow-[0_-4px_6_px_-1px_rgba(0,0,0,0.05)]">
             <form onSubmit={handleSendMessage} className="flex gap-2">
                 <input 
                     type="text"
-                    className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
+                    className="flex-1 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-3 text-base md:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white dark:focus:bg-slate-600 transition-all"
                     placeholder="Responda ou peça ajustes..."
                     value={inputValue}
                     onChange={e => setInputValue(e.target.value)}

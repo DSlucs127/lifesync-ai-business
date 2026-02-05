@@ -52,14 +52,14 @@ export const BudgetManager: React.FC<BudgetManagerProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800 mb-6">
         <div>
-            <h3 className="font-bold text-indigo-800">Metas Mensais</h3>
-            <p className="text-sm text-indigo-600">Defina limites para suas categorias e acompanhe o progresso deste mês.</p>
+            <h3 className="font-bold text-indigo-800 dark:text-indigo-100">Metas Mensais</h3>
+            <p className="text-sm text-indigo-600 dark:text-indigo-300">Defina limites para suas categorias e acompanhe o progresso deste mês.</p>
         </div>
         <Button 
             onClick={() => setShowAdvisor(true)}
-            className="bg-white text-indigo-700 border border-indigo-200 hover:bg-indigo-50 shadow-sm"
+            className="bg-white dark:bg-indigo-900 text-indigo-700 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-800 shadow-sm"
         >
             <Sparkles className="w-4 h-4 mr-2 text-yellow-500 fill-yellow-500" />
             {isFirstSetup ? 'Organizar com IA' : 'Ajustar Metas com IA'}
@@ -78,11 +78,11 @@ export const BudgetManager: React.FC<BudgetManagerProps> = ({
           if (percentage >= 100) colorClass = 'bg-red-500';
 
           return (
-            <div key={cat.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div key={cat.id} className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center space-x-2">
                     <span className={`w-3 h-3 rounded-full ${colorClass}`}></span>
-                    <span className="font-semibold text-slate-800">{cat.name}</span>
+                    <span className="font-semibold text-slate-800 dark:text-white">{cat.name}</span>
                 </div>
                 
                 {editingId === cat.name ? (
@@ -99,18 +99,18 @@ export const BudgetManager: React.FC<BudgetManagerProps> = ({
                         </Button>
                     </div>
                 ) : (
-                    <button onClick={() => handleEdit(cat.name, limit)} className="text-sm font-medium text-slate-500 hover:text-indigo-600 flex items-center">
+                    <button onClick={() => handleEdit(cat.name, limit)} className="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center">
                         <span className="mr-2">Meta: R$ {limit.toFixed(0)}</span>
                         <Edit2 className="w-3 h-3" />
                     </button>
                 )}
               </div>
 
-              <div className="w-full bg-slate-100 rounded-full h-2.5 mb-1">
+              <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2.5 mb-1">
                 <div className={`h-2.5 rounded-full transition-all duration-500 ${colorClass}`} style={{ width: `${percentage}%` }}></div>
               </div>
               
-              <div className="flex justify-between text-xs text-slate-500">
+              <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
                 <span>Gasto: R$ {spent.toFixed(2)}</span>
                 <span>{percentage.toFixed(0)}%</span>
               </div>
