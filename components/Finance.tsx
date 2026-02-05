@@ -17,9 +17,7 @@ interface FinanceProps {
   categories: Category[];
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   budgets: Budget[];
-  // Fix: Update prop signature to omit userId as it is handled by the useAppData hook
   onUpdateBudget: (b: Omit<Budget, 'userId'>) => void;
-  // Fix: Update prop signature to omit userId to match useAppData and TransactionForm
   onAddTransaction: (t: Omit<Transaction, 'id' | 'userId'>) => void;
   onEditTransaction: (t: Transaction) => void;
   onDeleteTransaction: (id: string) => void;

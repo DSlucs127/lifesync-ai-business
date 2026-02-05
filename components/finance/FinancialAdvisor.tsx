@@ -11,7 +11,6 @@ interface FinancialAdvisorProps {
   transactions: Transaction[];
   categories: Category[];
   budgets: Budget[];
-  // Fix: Update prop signature to omit userId
   onUpdateBudget: (b: Omit<Budget, 'userId'>) => void;
   onAddCategory: (name: string) => void;
 }
