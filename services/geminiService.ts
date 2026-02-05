@@ -4,6 +4,15 @@ import { Transaction, CalendarEvent, Attachment, Lead } from "../types";
 // Modelo recomendado para velocidade e tarefas gerais
 const MODEL = 'gemini-3-flash-preview';
 
+let aiInstance: GoogleGenAI | null = null;
+
+const getAiClient = () => {
+  if (!aiInstance) {
+    aiInstance = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  }
+  return aiInstance;
+};
+
 const tools: FunctionDeclaration[] = [
   {
     name: 'addTransaction',
@@ -38,7 +47,7 @@ const tools: FunctionDeclaration[] = [
 ];
 
 export const geminiChat = async (prompt: string, context: 'personal' | 'work', history: any[] = []) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = getAiClient();
   
   const systemInstruction = context === 'work' 
     ? "Você é um Consultor de Vendas Digital. Sua missão é ajudar a converter leads em clientes e gerenciar o CRM. Sugira respostas educadas, profissionais e focadas em fechamento."
@@ -62,7 +71,7 @@ export const sendMessageToGemini = async (
   context: { transactions: Transaction[], events: CalendarEvent[] },
   history: any[] = []
 ) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = getAiClient();
 
   const parts: any[] = [{ text }];
 
@@ -91,7 +100,7 @@ export const sendMessageToGemini = async (
 };
 
 export const analyzeLead = async (lead: Lead) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = getAiClient();
   
   const prompt = `Analise este lead e sugira 3 ações de fechamento. 
   Lead: ${lead.name}, Valor: R$${lead.value}, Status: ${lead.status}.`;
@@ -112,7 +121,7 @@ export const analyzeLead = async (lead: Lead) => {
  * Gera uma sugestão de resposta para WhatsApp baseada no contexto do lead.
  */
 export const suggestWhatsAppReply = async (leadName: string, lastMessages: string[]) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = getAiClient();
   
   const prompt = `Baseado nas últimas mensagens com o cliente ${leadName}:
   "${lastMessages.join(' | ')}"
@@ -131,7 +140,7 @@ export const suggestWhatsAppReply = async (leadName: string, lastMessages: strin
  * Gera um briefing diário com base nos eventos do usuário.
  */
 export const generateDailyBriefing = async (events: CalendarEvent[]) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = getAiClient();
   
   const today = new Date();
   const todayStr = today.toDateString();
