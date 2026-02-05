@@ -10,7 +10,6 @@ interface BudgetManagerProps {
   categories: Category[];
   transactions: Transaction[];
   budgets: Budget[];
-  // Fix: Update prop signature to omit userId
   onUpdateBudget: (budget: Omit<Budget, 'userId'>) => void;
   onAddCategory?: (name: string) => void; // New prop for AI integration
 }
