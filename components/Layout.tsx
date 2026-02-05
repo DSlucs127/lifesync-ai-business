@@ -23,7 +23,7 @@ export const Layout: React.FC<LayoutProps> = ({ currentView, onChangeView, child
   useNotifications(events);
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-slate-900 overflow-hidden font-sans relative transition-colors duration-300">
+    <div className="flex h-screen bg-app overflow-hidden font-sans relative transition-colors duration-300">
       <Sidebar 
         currentView={currentView} 
         onChangeView={onChangeView}
@@ -33,16 +33,16 @@ export const Layout: React.FC<LayoutProps> = ({ currentView, onChangeView, child
       
       <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
         {/* Mobile Header */}
-        <header className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-3 flex items-center justify-between z-20 sticky top-0 shadow-sm shrink-0">
+        <header className="md:hidden bg-surface border-b border-bdr p-3 flex items-center justify-between z-20 sticky top-0 shadow-sm shrink-0">
           <div className="flex items-center space-x-2">
-            <Bot className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-            <span className="font-bold text-indigo-600 dark:text-indigo-400 text-lg">LifeSync</span>
+            <Bot className="w-6 h-6 text-primary" />
+            <span className="font-bold text-primary text-lg">LifeSync</span>
           </div>
           <div className="flex items-center gap-1">
              <button 
                 onClick={toggleWorkMode}
                 aria-label={isWorkMode ? "Alternar para modo pessoal" : "Alternar para modo trabalho"}
-                className={`p-2 rounded-full transition-all ${isWorkMode ? 'bg-slate-800 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}
+                className={`p-2 rounded-full transition-all ${isWorkMode ? 'bg-slate-800 text-white' : 'bg-slate-100 dark:bg-slate-800 text-txt-secondary'}`}
              >
                 {isWorkMode ? <Briefcase className="w-5 h-5" /> : <Home className="w-5 h-5" />}
              </button>
@@ -50,7 +50,7 @@ export const Layout: React.FC<LayoutProps> = ({ currentView, onChangeView, child
              <button 
                 onClick={() => onChangeView('settings')}
                 aria-label="Configurações"
-                className={`p-2 rounded-full transition-all ${currentView === 'settings' ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                className={`p-2 rounded-full transition-all ${currentView === 'settings' ? 'bg-indigo-100 text-primary dark:bg-indigo-900/50' : 'text-txt-secondary hover:bg-surface-hover'}`}
              >
                 <SettingsIcon className="w-6 h-6" />
              </button>
@@ -58,9 +58,9 @@ export const Layout: React.FC<LayoutProps> = ({ currentView, onChangeView, child
         </header>
 
         {/* Desktop Header / Top Bar Area */}
-        <header className="hidden md:flex items-center justify-between px-8 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shrink-0 z-20">
+        <header className="hidden md:flex items-center justify-between px-8 py-4 bg-surface/80 backdrop-blur-md border-b border-bdr shrink-0 z-20">
              <div className="flex items-center space-x-2">
-                <span className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-md ${isWorkMode ? 'bg-slate-800 text-white' : 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400'}`}>
+                <span className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-md ${isWorkMode ? 'bg-slate-800 text-white' : 'bg-indigo-50 text-primary dark:bg-indigo-900/50'}`}>
                     {isWorkMode ? 'Modo Trabalho' : 'Modo Pessoal'}
                 </span>
                 {isWorkMode && <span className="text-xs text-slate-400">Finanças ocultas</span>}

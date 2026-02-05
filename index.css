@@ -1,0 +1,33 @@
+:root {
+  /* Light Mode Defaults */
+  --bg-app: #f9fafb;       /* gray-50 */
+  --bg-surface: #ffffff;   /* white */
+  --bg-surface-subtle: #f8fafc; /* slate-50 */
+  --bg-surface-hover: #f1f5f9; /* slate-100 */
+
+  --text-primary: #0f172a; /* slate-900 */
+  --text-secondary: #64748b; /* slate-500 */
+
+  --border-default: #e2e8f0; /* slate-200 */
+  --border-subtle: #f1f5f9; /* slate-100 */
+
+  --primary-color: #4f46e5; /* indigo-600 */
+  --primary-fg: #ffffff;
+}
+
+.dark {
+  /* Dark Mode Defaults */
+  --bg-app: #0f172a;       /* slate-900 */
+  --bg-surface: #1e293b;   /* slate-800 */
+  --bg-surface-subtle: #0f172a; /* slate-900 (often used for nested or main background) */
+  --bg-surface-hover: #334155; /* slate-700 */
+
+  --text-primary: #f1f5f9; /* slate-100 */
+  --text-secondary: #94a3b8; /* slate-400 */
+
+  --border-default: #334155; /* slate-700 */
+  --border-subtle: #1e293b; /* slate-800 */
+
+  --primary-color: #818cf8; /* indigo-400 */
+  --primary-fg: #1e293b; /* slate-800 */
+}

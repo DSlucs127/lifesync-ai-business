@@ -14,10 +14,32 @@
       tailwind.config = {
         darkMode: 'class',
         theme: {
-          extend: {},
+          extend: {
+            colors: {
+              app: 'var(--bg-app)',
+              surface: {
+                DEFAULT: 'var(--bg-surface)',
+                subtle: 'var(--bg-surface-subtle)',
+                hover: 'var(--bg-surface-hover)',
+              },
+              primary: {
+                DEFAULT: 'var(--primary-color)',
+                fg: 'var(--primary-fg)',
+              },
+              txt: {
+                primary: 'var(--text-primary)',
+                secondary: 'var(--text-secondary)',
+              },
+              bdr: {
+                DEFAULT: 'var(--border-default)',
+                subtle: 'var(--border-subtle)',
+              }
+            }
+          },
         },
       }
     </script>
+    <link rel="stylesheet" href="/index.css">
     <style>
       /* Custom scrollbar for webkit */
       ::-webkit-scrollbar {
@@ -91,7 +113,6 @@
     }
   })(document,"script");
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body class="bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-100 selection:text-indigo-700 dark:selection:bg-indigo-900 dark:selection:text-indigo-300">
     <div id="root"></div>

@@ -24,13 +24,13 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({
       {/* Chat Window - Full Screen on Mobile, Floating on Desktop */}
       {isChatOpen && (
           <div className="
-            fixed z-50 bg-white flex flex-col overflow-hidden animate-slideUp shadow-2xl
+            fixed z-50 bg-surface flex flex-col overflow-hidden animate-slideUp shadow-2xl
             inset-0 w-full h-full rounded-none
-            md:inset-auto md:bottom-24 md:right-6 md:w-96 md:h-[600px] md:rounded-2xl md:border md:border-slate-200
+            md:inset-auto md:bottom-24 md:right-6 md:w-96 md:h-[600px] md:rounded-2xl md:border md:border-bdr
           ">
             {/* Header */}
             <div 
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 md:p-3 flex justify-between items-center text-white shrink-0 cursor-pointer" 
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 p-4 md:p-3 flex justify-between items-center text-white shrink-0 cursor-pointer"
                 onClick={() => setIsChatOpen(false)}
             >
               <div className="flex items-center space-x-2">
@@ -48,7 +48,7 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-hidden relative bg-slate-50">
+            <div className="flex-1 overflow-hidden relative bg-app">
               <AIChat 
                   transactions={transactions} 
                   events={events} 

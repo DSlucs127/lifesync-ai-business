@@ -45,7 +45,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   return (
-    <div className="p-3 border-t border-slate-200 bg-white">
+    <div className="p-3 border-t border-bdr bg-surface">
       <form onSubmit={onSend} className="flex items-end gap-2">
         
         {/* File Input */}
@@ -62,7 +62,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             <button 
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors"
+                className="p-2 text-txt-secondary hover:text-primary hover:bg-surface-hover rounded-full transition-colors"
                 title="Anexar arquivo"
                 aria-label="Anexar arquivo"
             >
@@ -75,7 +75,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                 className={`p-2 rounded-full transition-colors ${
                     isListening 
                     ? 'text-red-500 bg-red-50 animate-pulse' 
-                    : 'text-slate-400 hover:text-indigo-600 hover:bg-indigo-50'
+                    : 'text-txt-secondary hover:text-primary hover:bg-surface-hover'
                 }`}
                 title="Digitar por voz"
                 aria-label="Digitar por voz"
@@ -88,7 +88,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             <textarea
                 ref={textareaRef}
                 rows={1}
-                className="w-full rounded-2xl border border-slate-300 bg-slate-50 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 px-4 py-3 text-base md:text-sm transition-all resize-none overflow-y-auto min-h-[44px] max-h-[120px]"
+                className="w-full rounded-2xl border border-bdr bg-surface-subtle shadow-sm focus:border-primary focus:bg-surface focus:ring-1 focus:ring-primary px-4 py-3 text-base md:text-sm transition-all resize-none overflow-y-auto min-h-[44px] max-h-[120px] text-txt-primary placeholder:text-txt-secondary"
                 placeholder={isListening ? "Ouvindo..." : "Digite sua mensagem..."}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -102,7 +102,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                 type="submit" 
                 disabled={isLoading || (!input.trim() && !hasAttachments)} 
                 size="sm" 
-                className="rounded-full w-10 h-10 p-0 flex items-center justify-center shadow-md bg-indigo-600 hover:bg-indigo-700"
+                className="rounded-full w-10 h-10 p-0 flex items-center justify-center shadow-md bg-primary hover:opacity-90"
                 aria-label="Enviar mensagem"
             >
                 <Send className="w-4 h-4 text-white" />
