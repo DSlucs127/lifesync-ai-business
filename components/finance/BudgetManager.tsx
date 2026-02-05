@@ -43,7 +43,6 @@ export const BudgetManager: React.FC<BudgetManagerProps> = ({
   };
 
   const handleSave = (categoryName: string) => {
-    // Fix: Send only categoryId and limit
     onUpdateBudget({ categoryId: categoryName, limit: parseFloat(tempLimit) || 0 });
     setEditingId(null);
   };
