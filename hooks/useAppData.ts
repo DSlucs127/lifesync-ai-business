@@ -182,25 +182,30 @@ export const useAppData = (activeWorkspaceId?: string) => {
         else setSubscription({ plan: 'free' });
     });
 
+    let unsubFamTrans: (() => void) | undefined;
+    let unsubFamEvents: (() => void) | undefined;
+
     const qFamily = query(collection(db, 'families'), where('members', 'array-contains', user.uid));
     const unsubFamily = onSnapshot(qFamily, (s) => {
+        // Cleanup previous nested listeners
+        if (unsubFamTrans) { unsubFamTrans(); unsubFamTrans = undefined; }
+        if (unsubFamEvents) { unsubFamEvents(); unsubFamEvents = undefined; }
+
         if (!s.empty) {
             const familyData = { id: s.docs[0].id, ...s.docs[0].data() } as Family;
             setFamily(familyData);
             
             const qFamTrans = query(collection(db, 'transactions'), where('familyId', '==', familyData.id));
-            const unsubFamTrans = onSnapshot(qFamTrans, async (ss) => {
+            unsubFamTrans = onSnapshot(qFamTrans, async (ss) => {
                 const decrypted = await Promise.all(ss.docs.map(async d => decryptTransaction({id: d.id, ...d.data()}, user.uid)));
                 setFamilyTransactions(decrypted);
             });
             
             const qFamEvents = query(collection(db, 'events'), where('familyId', '==', familyData.id));
-            const unsubFamEvents = onSnapshot(qFamEvents, async (ss) => {
+            unsubFamEvents = onSnapshot(qFamEvents, async (ss) => {
                 const decrypted = await Promise.all(ss.docs.map(async d => decryptEvent({id: d.id, ...d.data()}, user.uid)));
                 setFamilyEvents(decrypted);
             });
-            
-            return () => { unsubFamTrans(); unsubFamEvents(); };
         } else {
             setFamily(null);
             setFamilyTransactions([]);
@@ -213,7 +218,10 @@ export const useAppData = (activeWorkspaceId?: string) => {
 
     return () => { 
       unsubProfile(); unsubTrans(); unsubEvents(); unsubTasks(); unsubCats(); unsubBudgets(); unsubSub(); 
-      unsubFamily(); unsubInvites(); unsubLeads(); unsubContacts(); unsubCompanies(); unsubTickets(); unsubTeam(); unsubOrgMembers();
+      unsubFamily();
+      if (unsubFamTrans) unsubFamTrans();
+      if (unsubFamEvents) unsubFamEvents();
+      unsubInvites(); unsubLeads(); unsubContacts(); unsubCompanies(); unsubTickets(); unsubTeam(); unsubOrgMembers();
     };
   }, [user, activeWorkspaceId, isDemo]);
 
