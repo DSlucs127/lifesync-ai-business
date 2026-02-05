@@ -159,7 +159,6 @@ export const AIChat: React.FC<AIChatProps> = ({ transactions, events, onAddTrans
                  responseText += `\n\n✅ Transação "${args.description}" (R$ ${args.amount}) adicionada.`;
               } else if (call.name === 'addEvent' && onAddEvent) {
                  const args = call.args as any;
-                 // Fix: Map tool call arguments to CalendarEvent correctly
                  onAddEvent({
                     title: args.title,
                     date: args.date,
