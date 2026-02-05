@@ -6,7 +6,6 @@ import { Button } from '../Button';
 
 interface TransactionFormProps {
   categories: Category[];
-  // Fix: Omit userId from the expected submit payload
   onSubmit: (t: Omit<Transaction, 'id' | 'userId'>) => void;
   onCancel: () => void;
 }
