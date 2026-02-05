@@ -7,7 +7,13 @@
 
 const ENCRYPTION_SALT = "lifesync_secure_salt_v1";
 
+const keyCache = new Map<string, CryptoKey>();
+
 async function getKey(userId: string): Promise<CryptoKey> {
+  if (keyCache.has(userId)) {
+    return keyCache.get(userId)!;
+  }
+
   const enc = new TextEncoder();
   const baseKey = await window.crypto.subtle.importKey(
     "raw",
@@ -17,7 +23,7 @@ async function getKey(userId: string): Promise<CryptoKey> {
     ["deriveKey"]
   );
 
-  return window.crypto.subtle.deriveKey(
+  const derivedKey = await window.crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
       salt: enc.encode(ENCRYPTION_SALT),
@@ -29,6 +35,9 @@ async function getKey(userId: string): Promise<CryptoKey> {
     false,
     ["encrypt", "decrypt"]
   );
+
+  keyCache.set(userId, derivedKey);
+  return derivedKey;
 }
 
 export async function encryptField(text: string | number, userId: string): Promise<string> {
