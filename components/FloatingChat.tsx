@@ -40,6 +40,7 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({
               <button 
                 onClick={(e) => { e.stopPropagation(); setIsChatOpen(false); }}
                 className="hover:bg-white/20 rounded-full p-1 transition-colors"
+                aria-label="Minimizar chat"
               >
                   <div className="md:hidden"><ChevronDown className="w-6 h-6" /></div>
                   <div className="hidden md:block"><Minimize2 className="w-4 h-4" /></div>
@@ -62,6 +63,7 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({
       {/* FAB Button - Hidden on Mobile when Chat is Open to avoid clutter */}
       <button 
           onClick={() => setIsChatOpen(!isChatOpen)}
+          aria-label={isChatOpen ? "Fechar chat" : "Abrir chat"}
           className={`
               fixed bottom-24 md:bottom-6 right-6 z-40
               h-14 w-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300

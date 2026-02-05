@@ -64,6 +64,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                 onClick={() => fileInputRef.current?.click()}
                 className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors"
                 title="Anexar arquivo"
+                aria-label="Anexar arquivo"
             >
                 <Paperclip className="w-5 h-5" />
             </button>
@@ -77,6 +78,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                     : 'text-slate-400 hover:text-indigo-600 hover:bg-indigo-50'
                 }`}
                 title="Digitar por voz"
+                aria-label="Digitar por voz"
             >
                 <Mic className="w-5 h-5" />
             </button>
@@ -101,6 +103,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                 disabled={isLoading || (!input.trim() && !hasAttachments)} 
                 size="sm" 
                 className="rounded-full w-10 h-10 p-0 flex items-center justify-center shadow-md bg-indigo-600 hover:bg-indigo-700"
+                aria-label="Enviar mensagem"
             >
                 <Send className="w-4 h-4 text-white" />
             </Button>

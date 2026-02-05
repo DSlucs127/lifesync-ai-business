@@ -41,6 +41,7 @@ export const Layout: React.FC<LayoutProps> = ({ currentView, onChangeView, child
           <div className="flex items-center gap-1">
              <button 
                 onClick={toggleWorkMode}
+                aria-label={isWorkMode ? "Alternar para modo pessoal" : "Alternar para modo trabalho"}
                 className={`p-2 rounded-full transition-all ${isWorkMode ? 'bg-slate-800 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}
              >
                 {isWorkMode ? <Briefcase className="w-5 h-5" /> : <Home className="w-5 h-5" />}
@@ -48,6 +49,7 @@ export const Layout: React.FC<LayoutProps> = ({ currentView, onChangeView, child
              <NotificationsPopover transactions={transactions} events={events} />
              <button 
                 onClick={() => onChangeView('settings')}
+                aria-label="Configurações"
                 className={`p-2 rounded-full transition-all ${currentView === 'settings' ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
              >
                 <SettingsIcon className="w-6 h-6" />

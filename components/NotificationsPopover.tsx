@@ -73,6 +73,7 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({ tran
     <div className="relative z-40">
       <button 
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={totalCount > 0 ? `${totalCount} notificações não lidas` : "Notificações"}
         className="p-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors relative"
       >
         <Bell className="w-6 h-6" />
@@ -133,6 +134,7 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({ tran
                                                 onClick={(ev) => dismissNotification(e.id, ev)}
                                                 className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-white dark:bg-slate-600 rounded-full shadow-sm text-slate-400 hover:text-emerald-500 opacity-0 group-hover:opacity-100 transition-all transform scale-90 hover:scale-110"
                                                 title="Marcar como lido"
+                                                aria-label="Marcar como lido"
                                             >
                                                 <Check className="w-3 h-3" />
                                             </button>
@@ -165,6 +167,7 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({ tran
                                                 onClick={(ev) => dismissNotification(t.id, ev)}
                                                 className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-white dark:bg-slate-600 rounded-full shadow-sm text-slate-400 hover:text-emerald-500 opacity-0 group-hover:opacity-100 transition-all transform scale-90 hover:scale-110"
                                                 title="Marcar como visto"
+                                                aria-label="Marcar como visto"
                                             >
                                                 <Check className="w-3 h-3" />
                                             </button>

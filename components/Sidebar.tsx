@@ -147,7 +147,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, isW
                             <p className="text-xs text-slate-500 dark:text-slate-500 truncate">{isWorkMode ? 'Focado' : 'Online'}</p>
                         </div>
                     </div>
-                    <button onClick={() => logout()} className="text-slate-400 hover:text-red-500 transition-colors" title="Sair">
+                    <button onClick={() => logout()} className="text-slate-400 hover:text-red-500 transition-colors" title="Sair" aria-label="Sair">
                         <LogOut className="w-5 h-5" />
                     </button>
                 </div>
