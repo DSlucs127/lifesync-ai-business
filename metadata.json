@@ -1,0 +1,7 @@
+{
+  "name": "LifeSync AI Business",
+  "description": "Enterprise-grade CRM and Personal Assistant",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

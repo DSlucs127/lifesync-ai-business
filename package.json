@@ -1,0 +1,21 @@
+{
+  "name": "lifesync-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "web": "npm run dev --workspace=apps/web",
+    "mobile": "npm run start --workspace=apps/mobile",
+    "desktop": "npm start --workspace=apps/desktop",
+    "install:all": "npm install"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "^6.0.0"
+  }
+}

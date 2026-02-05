@@ -1,0 +1,15 @@
+{
+  "appId": "com.assist",
+  "appName": "LifeSync AI",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "AdMob": {
+      "androidAppId": "ca-app-pub-2788301029310249~8105070621",
+      "iosAppId": "ca-app-pub-2788301029310249~8105070621"
+    }
+  }
+}

@@ -1,0 +1,151 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // --- Helper Functions ---
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Checks if the existing document belongs to the user (for read/update/delete)
+    function isResourceOwner() {
+      return resource.data.userId == request.auth.uid;
+    }
+    
+    // Checks if the new document is being created with the correct userId
+    function isRequestOwner() {
+      return request.resource.data.userId == request.auth.uid;
+    }
+
+    // --- Core Collections ---
+
+    // 1. Users
+    match /users/{userId} {
+      allow read, write: if isSignedIn() && isOwner(userId);
+      match /{document=**} {
+        allow read, write: if isSignedIn() && isOwner(userId);
+      }
+    }
+
+    // 2. Transações (Personal + Family)
+    match /transactions/{id} {
+      allow create: if isSignedIn() && isRequestOwner();
+      allow read, update, delete: if isSignedIn() && (
+        isResourceOwner() || 
+        (resource.data.familyId != null && 
+         exists(/databases/$(database)/documents/families/$(resource.data.familyId)) && 
+         request.auth.uid in get(/databases/$(database)/documents/families/$(resource.data.familyId)).data.members)
+      );
+    }
+
+    // 3. Events (Personal + Family)
+    match /events/{id} {
+      allow create: if isSignedIn() && isRequestOwner();
+      allow read, update, delete: if isSignedIn() && (
+        isResourceOwner() || 
+        (resource.data.familyId != null && 
+         exists(/databases/$(database)/documents/families/$(resource.data.familyId)) && 
+         request.auth.uid in get(/databases/$(database)/documents/families/$(resource.data.familyId)).data.members)
+      );
+    }
+
+    // 4. Families & Invites
+    match /families/{familyId} {
+      allow create: if isSignedIn();
+      allow read: if isSignedIn() && request.auth.uid in resource.data.members;
+      allow update: if isSignedIn() && (
+        request.auth.uid == resource.data.ownerId || 
+        (request.auth.uid in resource.data.members && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['invitedEmails']))
+      );
+      allow delete: if isSignedIn() && request.auth.uid == resource.data.ownerId;
+    }
+
+    match /family_invites/{inviteId} {
+      allow create: if isSignedIn();
+      allow read: if isSignedIn() && (
+        request.auth.token.email == resource.data.toEmail || 
+        request.auth.uid == resource.data.fromUserId
+      );
+      allow update: if isSignedIn() && request.auth.token.email == resource.data.toEmail;
+    }
+
+    // --- Personal Productivity Collections ---
+    
+    match /tasks/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+    
+    match /categories/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+    
+    match /budgets/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+    
+    match /subscriptions/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+    
+    match /user_stats/{userId} {
+      allow read, write: if isSignedIn() && isOwner(userId);
+    }
+    
+    match /study_plans/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+
+    // --- Business / CRM Collections ---
+    
+    match /leads/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+    
+    match /contacts/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+    
+    match /companies/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+    
+    match /tickets/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+    
+    match /team_members/{id} {
+      allow read, update, delete: if isSignedIn() && isResourceOwner();
+      allow create: if isSignedIn() && isRequestOwner();
+    }
+
+    // --- Admin / Organization ---
+    match /organization_members/{id} {
+      allow read: if isSignedIn() && (
+        resource.data.organizationOwnerId == request.auth.uid || 
+        resource.data.email == request.auth.token.email
+      );
+      allow create: if isSignedIn() && request.resource.data.organizationOwnerId == request.auth.uid;
+      allow update, delete: if isSignedIn() && resource.data.organizationOwnerId == request.auth.uid;
+    }
+
+    // --- Fallback ---
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
